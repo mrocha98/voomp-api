@@ -5,6 +5,7 @@ import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 @Injectable()
 export class EmailService {
+  // eslint-disable-next-line @typescript-eslint/require-await
   async createMailer(): Promise<
     nodemailer.Transporter<SMTPTransport.SentMessageInfo, SMTPTransport.Options>
   > {

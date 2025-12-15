@@ -6,7 +6,6 @@ import { AppService } from './app.service';
 import { UserEntity } from './entities/user.entity';
 import { Config } from './config';
 import { EmailService } from './services/email.service';
-import { EmailController } from './controllers/email.controller';
 import { GenerationCodeEntity } from './entities/generation-code.entity';
 import { GenerationCodeService } from './services/generation-code.service';
 import { GenerationCodeController } from './controllers/generation-code.controller';
@@ -43,12 +42,7 @@ import { AuthController } from './controllers/auth.controller';
       signOptions: { expiresIn: '7d' },
     }),
   ],
-  controllers: [
-    AppController,
-    EmailController,
-    GenerationCodeController,
-    AuthController,
-  ],
+  controllers: [AppController, GenerationCodeController, AuthController],
   providers: [
     AppService,
     EmailService,

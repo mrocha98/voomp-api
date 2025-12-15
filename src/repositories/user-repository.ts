@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDTO } from 'src/dtos/create-user.dto';
+import { UserOnboardingEntity } from 'src/entities/user-onboarding.entity';
 import { UserEntity } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 
@@ -9,6 +10,8 @@ export class UserRepository {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(UserOnboardingEntity)
+    private readonly userOnboardingRepository: Repository<UserOnboardingEntity>,
   ) {}
 
   async findByEmail(email: string): Promise<UserEntity | null> {
@@ -16,7 +19,10 @@ export class UserRepository {
   }
 
   async create(user: CreateUserDTO): Promise<UserEntity> {
-    return await this.userRepository.save(user);
+    const onboarding = await this.userOnboardingRepository.save(
+      user.onboarding,
+    );
+    return await this.userRepository.save({ ...user, onboarding });
   }
 
   async checkCPFInUse(cpf: string): Promise<boolean> {

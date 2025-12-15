@@ -9,7 +9,7 @@ import {
 import { UserEntity } from './user.entity';
 import { Goal, HowKnew } from 'src/enums/user-onboarding';
 
-@Entity('users-onboarding')
+@Entity('users_onboarding')
 export class UserOnboardingEntity {
   @PrimaryGeneratedColumn()
   id: number;

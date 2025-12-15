@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GenerationCodeEntity } from 'src/entities/generation-code.entity';
+import { GetGenerationCodeDTO } from 'src/dtos/get-generation-code.dto';
 
 @Injectable()
 class GenerationCodeService {
@@ -14,10 +15,22 @@ class GenerationCodeService {
     return Math.floor(100000 + Math.random() * 900000).toString();
   }
 
-  async getGenerationCode(): Promise<GenerationCodeEntity> {
+  async getGenerationCode({
+    email,
+  }: GetGenerationCodeDTO): Promise<GenerationCodeEntity> {
+    const existentCode = await this.generationRepository.findOneBy({ email });
+
+    if (existentCode) {
+      const refreshCode = this.generateCode();
+      existentCode.code = refreshCode;
+      await this.generationRepository.update({ email }, existentCode);
+      return existentCode;
+    }
+
     return await this.generationRepository.save(
       this.generationRepository.create({
         code: this.generateCode(),
+        email,
       }),
     );
   }

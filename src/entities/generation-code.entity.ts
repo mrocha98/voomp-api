@@ -1,18 +1,21 @@
-import { 
+import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn, 
-  UpdateDateColumn
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
-@Entity("generation_code")
+@Entity('generation_code')
 export class GenerationCodeEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ length: 6 })
   code: string;
+
+  @Column({ unique: true })
+  email: string;
 
   @Column({ default: false })
   isActive: boolean;

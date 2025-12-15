@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { HttpModule } from '@nestjs/axios';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserEntity } from './entities/user.entity';
@@ -15,9 +16,12 @@ import { PasswordHashService } from './services/password-hash.service';
 import { JwtModule } from '@nestjs/jwt';
 import { UserOnboardingEntity } from './entities/user-onboarding.entity';
 import { AuthController } from './controllers/auth.controller';
+import { IAService } from './services/ia.serice';
+import { IAController } from './controllers/ia-controller';
 
 @Module({
   imports: [
+    HttpModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -42,7 +46,12 @@ import { AuthController } from './controllers/auth.controller';
       signOptions: { expiresIn: '7d' },
     }),
   ],
-  controllers: [AppController, GenerationCodeController, AuthController],
+  controllers: [
+    AppController,
+    GenerationCodeController,
+    AuthController, 
+    IAController
+  ],
   providers: [
     AppService,
     EmailService,
@@ -50,6 +59,7 @@ import { AuthController } from './controllers/auth.controller';
     PasswordHashService,
     UserRepository,
     UserService,
+    IAService
   ],
 })
 export class AppModule {}

@@ -18,6 +18,14 @@ const Config = {
     password: process.env.EMAIL_PASSWORD!,
     source: process.env.EMAIL_SOURCE!,
   },
+  ia: {
+    token_url: process.env.IA_TOKEN_URL,
+    message_url: process.env.IA_MESSAGE_URL,
+    client_id: process.env.IA_CLIENT_ID,
+    username : process.env.IA_USERNAME,
+    password: process.env.IA_PASSWORD,
+    grant_type: process.env.IA_GRANT_TYPE,
+  } as Record<any, any>,
   jwt: {
     secret: process.env.JWT_SECRET!,
   },

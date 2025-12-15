@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres
+    container_name: voomp
+    environment:
+      POSTGRES_PASSWORD: qazwsx
+      POSTGRES_DB: voomp
+    ports:
+      - "5433:5432"

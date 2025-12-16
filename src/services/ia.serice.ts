@@ -1,7 +1,7 @@
+import { Config } from "src/config";
 import { Injectable } from "@nestjs/common";
 import { HttpService } from "@nestjs/axios";
 import { firstValueFrom } from "rxjs";
-import { Config } from "src/config";
 
 @Injectable()
 class IAService

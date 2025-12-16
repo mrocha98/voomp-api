@@ -42,4 +42,10 @@ export class ProductRepository {
       take: size,
     });
   }
+
+  async countAll(userId: number) {
+    return await this.productRepository.count({
+      where: { user: { id: userId } },
+    });
+  }
 }

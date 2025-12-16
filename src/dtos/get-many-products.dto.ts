@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-import { IsIn, IsOptional } from 'class-validator';
+import { IsBoolean, IsIn, IsOptional } from 'class-validator';
 import { PaginationDTO } from './pagination.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -16,4 +15,9 @@ export class GetManyProductsDTO extends PaginationDTO {
     default: 'title',
   })
   orderBy: OrderBy = 'title';
+
+  @IsOptional()
+  @IsBoolean()
+  @ApiProperty({ required: false, type: 'boolean' })
+  countOnly: boolean = false;
 }

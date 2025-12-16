@@ -52,8 +52,9 @@ export class UserService {
   }
 
   mapToResponse(user: UserEntity): UserResponseDTO {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
-    return plainToClass(UserResponseDTO, user);
+    return plainToClass(UserResponseDTO, user, {
+      excludeExtraneousValues: true,
+    });
   }
 
   async login({ email, password }: LoginDTO): Promise<{ accessToken: string }> {

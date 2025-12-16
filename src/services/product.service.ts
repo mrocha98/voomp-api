@@ -34,19 +34,19 @@ export class ProductService {
   }
 
   mapToResponse(product: ProductEntity): ProductResponseDTO {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
-    return plainToClass(ProductResponseDTO, product);
+    return plainToClass(ProductResponseDTO, product, {
+      excludeExtraneousValues: true,
+    });
   }
 
   mapListToResponse(
     products: ProductEntity[],
     total: number,
   ): ProductsResponseDTO {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     const items = plainToInstance(ProductResponseDTO, products);
     return {
       total,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
       items,
     };
   }
@@ -69,5 +69,9 @@ export class ProductService {
 
   async getMany(userId: number, data: GetManyProductsDTO) {
     return await this.productRepository.findAllAndCount(userId, data);
+  }
+
+  async getTotal(userId: number) {
+    return await this.productRepository.countAll(userId);
   }
 }

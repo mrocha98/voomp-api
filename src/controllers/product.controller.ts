@@ -31,6 +31,10 @@ export class ProductController {
     @Query() query: GetManyProductsDTO,
     @User('id') userId: number,
   ) {
+    if (query.countOnly) {
+      const total = await this.productService.getTotal(userId);
+      return this.productService.mapListToResponse([], total);
+    }
     const [products, total] = await this.productService.getMany(userId, query);
     return this.productService.mapListToResponse(products, total);
   }

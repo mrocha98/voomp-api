@@ -20,8 +20,8 @@ import { ProductEntity } from './entities/product.entity';
 import { ProductController } from './controllers/product.controller';
 import { ProductRepository } from './repositories/product.repository';
 import { ProductService } from './services/product.service';
-import { IAService } from './services/ia.serice';
-import { IAController } from './controllers/ia-controller';
+import { IAService } from './services/ia.service';
+import { IAController } from './controllers/ia.controller';
 
 @Module({
   imports: [

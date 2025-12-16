@@ -72,6 +72,7 @@ export class UserService {
 
     const payload = {
       sub: user.id,
+      id: user.id,
       name: user.name,
       email: user.email,
       phoneNumber: user.phoneNumber,

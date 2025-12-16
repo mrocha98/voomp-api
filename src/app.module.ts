@@ -22,6 +22,7 @@ import { ProductRepository } from './repositories/product.repository';
 import { ProductService } from './services/product.service';
 import { IAService } from './services/ia.service';
 import { IAController } from './controllers/ia.controller';
+import { BucketService } from './services/bucket.service';
 
 @Module({
   imports: [
@@ -66,6 +67,7 @@ import { IAController } from './controllers/ia.controller';
   providers: [
     AppService,
     EmailService,
+    BucketService,
     GenerationCodeService,
     PasswordHashService,
     UserRepository,

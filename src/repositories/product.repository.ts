@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateProductDTO } from 'src/dtos/create-product.dto';
 import { GetManyProductsDTO } from 'src/dtos/get-many-products.dto';
 import { ProductEntity } from 'src/entities/product.entity';
-import { UserEntity } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -17,9 +16,12 @@ export class ProductRepository {
     return await this.productRepository.findOneBy({ id, user: { id: userId } });
   }
 
-  async create(product: CreateProductDTO, user: UserEntity) {
-    const newProduct = await this.productRepository.save({ ...product, user });
-    return newProduct;
+  async create(product: CreateProductDTO, userId: number, coverUrl?: string) {
+    return await this.productRepository.save({
+      ...product,
+      user: { id: userId },
+      coverUrl,
+    });
   }
 
   async delete(id: number) {

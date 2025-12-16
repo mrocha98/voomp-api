@@ -10,13 +10,17 @@ import {
 } from 'src/dtos/product-response.dto';
 import { CreateProductDTO } from 'src/dtos/create-product.dto';
 import { ProductEntity } from 'src/entities/product.entity';
-import { UserEntity } from 'src/entities/user.entity';
 import { ProductRepository } from 'src/repositories/product.repository';
 import { GetManyProductsDTO } from 'src/dtos/get-many-products.dto';
+import { BucketService } from './bucket.service';
+import path from 'node:path';
 
 @Injectable()
 export class ProductService {
-  constructor(private readonly productRepository: ProductRepository) {}
+  constructor(
+    private readonly productRepository: ProductRepository,
+    private readonly bucketService: BucketService,
+  ) {}
 
   async getOne(id: number, userId: number) {
     const product = await this.productRepository.findOne(id, userId);
@@ -28,9 +32,19 @@ export class ProductService {
 
   async create(
     product: CreateProductDTO,
-    user: UserEntity,
+    userId: number,
+    cover?: Express.Multer.File,
   ): Promise<ProductEntity> {
-    return await this.productRepository.create(product, user);
+    let coverUrl: string | undefined = undefined;
+    if (cover) {
+      const { name, ext } = path.parse(cover.originalname);
+      const randomData = Date.now().toString(36);
+      const fileName = `${name}_${randomData}${ext}`;
+
+      coverUrl = await this.bucketService.uploadFile(fileName, cover.buffer);
+    }
+
+    return await this.productRepository.create(product, userId, coverUrl);
   }
 
   mapToResponse(product: ProductEntity): ProductResponseDTO {

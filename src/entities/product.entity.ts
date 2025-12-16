@@ -7,6 +7,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -40,7 +41,7 @@ export class ProductEntity {
   website?: string;
 
   @Column({ nullable: true })
-  imageUrl?: string;
+  coverUrl?: string;
 
   @Column({ type: 'smallint' })
   warrantyInDays: number;
@@ -51,6 +52,10 @@ export class ProductEntity {
   @Column({ type: 'enum', enum: ProductBillingType })
   billingType: ProductBillingType;
 
-  @ManyToOne(() => UserEntity, (user) => user.products)
+  @ManyToOne(() => UserEntity, (user) => user.products, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'userId' })
   user: UserEntity;
 }

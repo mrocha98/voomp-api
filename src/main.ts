@@ -9,11 +9,23 @@ async function bootstrap() {
 
   app.setGlobalPrefix(String(Config.api.base));
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  app.enableCors();
 
   const config = new DocumentBuilder()
     .setTitle('Voomp API')
     .setDescription('Equipe BugBusters - Hackathon Voomp 2025')
     .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT', // Optional, for documentation purposes
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'bearerAuth',
+    )
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, documentFactory);

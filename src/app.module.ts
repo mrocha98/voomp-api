@@ -9,12 +9,16 @@ import { EmailService } from './services/email.service';
 import { GenerationCodeEntity } from './entities/generation-code.entity';
 import { GenerationCodeService } from './services/generation-code.service';
 import { GenerationCodeController } from './controllers/generation-code.controller';
-import { UserRepository } from './repositories/user-repository';
+import { UserRepository } from './repositories/user.repository';
 import { UserService } from './services/user.service';
 import { PasswordHashService } from './services/password-hash.service';
 import { JwtModule } from '@nestjs/jwt';
 import { UserOnboardingEntity } from './entities/user-onboarding.entity';
 import { AuthController } from './controllers/auth.controller';
+import { ProductEntity } from './entities/product.entity';
+import { ProductController } from './controllers/product.controller';
+import { ProductRepository } from './repositories/product.repository';
+import { ProductService } from './services/product.service';
 
 @Module({
   imports: [
@@ -29,12 +33,18 @@ import { AuthController } from './controllers/auth.controller';
       password: Config.database.password,
       database: Config.database.name,
       synchronize: true,
-      entities: [UserEntity, UserOnboardingEntity, GenerationCodeEntity],
+      entities: [
+        UserEntity,
+        UserOnboardingEntity,
+        GenerationCodeEntity,
+        ProductEntity,
+      ],
     }),
     TypeOrmModule.forFeature([
       UserEntity,
       UserOnboardingEntity,
       GenerationCodeEntity,
+      ProductEntity,
     ]),
     JwtModule.register({
       global: true,
@@ -42,7 +52,12 @@ import { AuthController } from './controllers/auth.controller';
       signOptions: { expiresIn: '7d' },
     }),
   ],
-  controllers: [AppController, GenerationCodeController, AuthController],
+  controllers: [
+    AppController,
+    GenerationCodeController,
+    AuthController,
+    ProductController,
+  ],
   providers: [
     AppService,
     EmailService,
@@ -50,6 +65,8 @@ import { AuthController } from './controllers/auth.controller';
     PasswordHashService,
     UserRepository,
     UserService,
+    ProductRepository,
+    ProductService,
   ],
 })
 export class AppModule {}

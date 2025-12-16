@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { Goal, HowKnew } from 'src/enums/user-onboarding';
 
-class CreateUserOnboardingResponseDTO {
+class UserOnboardingResponseDTO {
   @ApiProperty({ enum: HowKnew, required: false })
   howKnew?: HowKnew;
 
@@ -14,7 +14,7 @@ class CreateUserOnboardingResponseDTO {
   goal?: Goal;
 }
 
-export class CreateUserResponseDTO {
+export class UserResponseDTO {
   @ApiProperty()
   id: number;
 
@@ -30,7 +30,7 @@ export class CreateUserResponseDTO {
   @ApiProperty()
   phoneNumber: string;
 
-  @ApiProperty({ type: CreateUserOnboardingResponseDTO })
-  @Type(() => CreateUserOnboardingResponseDTO)
-  onboarding: CreateUserOnboardingResponseDTO;
+  @ApiProperty({ type: UserOnboardingResponseDTO })
+  @Type(() => UserOnboardingResponseDTO)
+  onboarding: UserOnboardingResponseDTO;
 }

@@ -14,6 +14,10 @@ export class UserRepository {
     private readonly userOnboardingRepository: Repository<UserOnboardingEntity>,
   ) {}
 
+  async findById(id: number) {
+    return await this.userRepository.findOneBy({ id });
+  }
+
   async findByEmail(email: string): Promise<UserEntity | null> {
     return this.userRepository.findOneBy({ email });
   }

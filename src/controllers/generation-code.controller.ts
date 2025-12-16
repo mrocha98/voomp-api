@@ -4,7 +4,7 @@ import { UseGenerationCodeDTO } from 'src/dtos/use-generation-code.dto';
 import { EmailService } from 'src/services/email.service';
 import { GenerationCodeService } from 'src/services/generation-code.service';
 
-@Controller('generation-code')
+@Controller("generation-code")
 export class GenerationCodeController {
   constructor(
     private readonly generationCode: GenerationCodeService,

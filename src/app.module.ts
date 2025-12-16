@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { HttpModule } from '@nestjs/axios';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserEntity } from './entities/user.entity';
@@ -19,9 +20,12 @@ import { ProductEntity } from './entities/product.entity';
 import { ProductController } from './controllers/product.controller';
 import { ProductRepository } from './repositories/product.repository';
 import { ProductService } from './services/product.service';
+import { IAService } from './services/ia.serice';
+import { IAController } from './controllers/ia-controller';
 
 @Module({
   imports: [
+    HttpModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -56,6 +60,7 @@ import { ProductService } from './services/product.service';
     AppController,
     GenerationCodeController,
     AuthController,
+    IAController,
     ProductController,
   ],
   providers: [
@@ -65,6 +70,7 @@ import { ProductService } from './services/product.service';
     PasswordHashService,
     UserRepository,
     UserService,
+    IAService,
     ProductRepository,
     ProductService,
   ],

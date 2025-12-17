@@ -1,5 +1,6 @@
-import { S3 } from '@aws-sdk/client-s3';
+import { GetObjectCommand, S3 } from '@aws-sdk/client-s3';
 import { Upload } from '@aws-sdk/lib-storage';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Injectable } from '@nestjs/common';
 import { Config } from 'src/config';
 
@@ -26,7 +27,17 @@ export class BucketService {
 
     await uploader.done();
 
-    const fileUrl = `https://${Config.aws.bucket_name}.s3.${Config.aws.s3_region}.amazonaws.com/${fileName}`;
+    const fileUrl = await this.generateSignedUrl(fileName);
     return fileUrl;
+  }
+
+  async generateSignedUrl(fileName: string, expiresIn = 12 * 60 * 60) {
+    const command = new GetObjectCommand({
+      Bucket: Config.aws.bucket_name,
+      Key: fileName,
+    });
+
+    const url = await getSignedUrl(this.s3Client, command, { expiresIn });
+    return url;
   }
 }

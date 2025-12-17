@@ -39,7 +39,10 @@ export class ProductService {
     if (cover) {
       const { name, ext } = path.parse(cover.originalname);
       const randomData = Date.now().toString(36);
-      const fileName = `${name}_${randomData}${ext}`;
+      const fileName = path.join(
+        'products-covers',
+        `${name}_${randomData}${ext}`,
+      );
 
       coverUrl = await this.bucketService.uploadFile(fileName, cover.buffer);
     }

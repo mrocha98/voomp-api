@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GenerationCodeEntity } from 'src/entities/generation-code.entity';
 import { GetGenerationCodeDTO } from 'src/dtos/get-generation-code.dto';
+import { UseGenerationCodeDTO } from 'src/dtos/use-generation-code.dto';
 
 @Injectable()
 class GenerationCodeService {
@@ -21,6 +22,9 @@ class GenerationCodeService {
     const existentCode = await this.generationRepository.findOneBy({ email });
 
     if (existentCode) {
+      if (existentCode.isActive) {
+        return existentCode;
+      }
       const refreshCode = this.generateCode();
       existentCode.code = refreshCode;
       await this.generationRepository.update({ email }, existentCode);
@@ -37,9 +41,10 @@ class GenerationCodeService {
 
   async useGenerationCode(
     code: string,
+    { email }: UseGenerationCodeDTO,
   ): Promise<GenerationCodeEntity | boolean> {
     const generationCode = await this.generationRepository.findOne({
-      where: { code: code },
+      where: { code, email },
     });
 
     if (generationCode === null) {
@@ -47,7 +52,7 @@ class GenerationCodeService {
     }
 
     if (generationCode.isActive === true) {
-      throw new ForbiddenException('GenerationCode already in use');
+      return true;
     }
 
     await this.generationRepository.update(

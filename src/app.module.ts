@@ -10,14 +10,18 @@ import { EmailService } from './services/email.service';
 import { GenerationCodeEntity } from './entities/generation-code.entity';
 import { GenerationCodeService } from './services/generation-code.service';
 import { GenerationCodeController } from './controllers/generation-code.controller';
-import { UserRepository } from './repositories/user-repository';
+import { UserRepository } from './repositories/user.repository';
 import { UserService } from './services/user.service';
 import { PasswordHashService } from './services/password-hash.service';
 import { JwtModule } from '@nestjs/jwt';
 import { UserOnboardingEntity } from './entities/user-onboarding.entity';
 import { AuthController } from './controllers/auth.controller';
-import { IAService } from './services/ia.serice';
-import { IAController } from './controllers/ia-controller';
+import { ProductEntity } from './entities/product.entity';
+import { ProductController } from './controllers/product.controller';
+import { ProductRepository } from './repositories/product.repository';
+import { ProductService } from './services/product.service';
+import { IAService } from './services/ia.service';
+import { IAController } from './controllers/ia.controller';
 
 @Module({
   imports: [
@@ -33,12 +37,18 @@ import { IAController } from './controllers/ia-controller';
       password: Config.database.password,
       database: Config.database.name,
       synchronize: true,
-      entities: [UserEntity, UserOnboardingEntity, GenerationCodeEntity],
+      entities: [
+        UserEntity,
+        UserOnboardingEntity,
+        GenerationCodeEntity,
+        ProductEntity,
+      ],
     }),
     TypeOrmModule.forFeature([
       UserEntity,
       UserOnboardingEntity,
       GenerationCodeEntity,
+      ProductEntity,
     ]),
     JwtModule.register({
       global: true,
@@ -49,8 +59,9 @@ import { IAController } from './controllers/ia-controller';
   controllers: [
     AppController,
     GenerationCodeController,
-    AuthController, 
-    IAController
+    AuthController,
+    IAController,
+    ProductController,
   ],
   providers: [
     AppService,
@@ -59,7 +70,9 @@ import { IAController } from './controllers/ia-controller';
     PasswordHashService,
     UserRepository,
     UserService,
-    IAService
+    IAService,
+    ProductRepository,
+    ProductService,
   ],
 })
 export class AppModule {}

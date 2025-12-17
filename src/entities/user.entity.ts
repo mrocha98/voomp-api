@@ -6,8 +6,10 @@ import {
   UpdateDateColumn,
   OneToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { UserOnboardingEntity } from './user-onboarding.entity';
+import { ProductEntity } from './product.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -38,4 +40,7 @@ export class UserEntity {
   @OneToOne(() => UserOnboardingEntity, (onboarding) => onboarding.user)
   @JoinColumn()
   onboarding: UserOnboardingEntity;
+
+  @OneToMany(() => ProductEntity, (product) => product.user)
+  products: ProductEntity[];
 }

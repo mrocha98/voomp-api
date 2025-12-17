@@ -5,9 +5,9 @@ import {
 } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { CreateUserDTO } from 'src/dtos/create-user.dto';
-import { CreateUserResponseDTO } from 'src/dtos/response-create-user.dto';
+import { UserResponseDTO } from 'src/dtos/user-response.dto';
 import { UserEntity } from 'src/entities/user.entity';
-import { UserRepository } from 'src/repositories/user-repository';
+import { UserRepository } from 'src/repositories/user.repository';
 import { PasswordHashService } from './password-hash.service';
 import { LoginDTO } from 'src/dtos/login.dto';
 import { JwtService } from '@nestjs/jwt';
@@ -21,14 +21,18 @@ export class UserService {
   ) {}
 
   async create(user: CreateUserDTO) {
-    const cpfInUse = await this.userRepository.checkCPFInUse(user.cpf);
+    const parsedCpf = user.cpf.replaceAll(/[-.]/g, '');
+    const cpfInUse = await this.userRepository.checkCPFInUse(parsedCpf);
     if (cpfInUse) {
       throw new BadRequestException('cpf já está em uso');
     }
+
     const emailInUse = await this.userRepository.checkEmailInUse(user.email);
     if (emailInUse) {
       throw new BadRequestException('email já está em uso');
     }
+
+    const parsedPhoneNumber = user.phoneNumber.replaceAll(/\D/g, '');
     const phoneNumberInUse = await this.userRepository.checkPhoneNumberInUse(
       user.email,
     );
@@ -40,14 +44,17 @@ export class UserService {
 
     const createdUser = await this.userRepository.create({
       ...user,
+      cpf: parsedCpf,
+      phoneNumber: parsedPhoneNumber,
       password: hashedPassword,
     });
     return createdUser;
   }
 
-  mapCreateToResponse(user: UserEntity): CreateUserResponseDTO {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
-    return plainToClass(CreateUserResponseDTO, user);
+  mapToResponse(user: UserEntity): UserResponseDTO {
+    return plainToClass(UserResponseDTO, user, {
+      excludeExtraneousValues: true,
+    });
   }
 
   async login({ email, password }: LoginDTO): Promise<{ accessToken: string }> {

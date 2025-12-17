@@ -10,7 +10,7 @@ export class AuthController {
   @Post('/sign-up')
   async signUp(@Body() body: CreateUserDTO) {
     const user = await this.userService.create(body);
-    const userResponse = this.userService.mapCreateToResponse(user);
+    const userResponse = this.userService.mapToResponse(user);
     return userResponse;
   }
 

@@ -1,5 +1,6 @@
 import { Body, Controller, Param, Post } from '@nestjs/common';
 import { GetGenerationCodeDTO } from 'src/dtos/get-generation-code.dto';
+import { UseGenerationCodeDTO } from 'src/dtos/use-generation-code.dto';
 import { EmailService } from 'src/services/email.service';
 import { GenerationCodeService } from 'src/services/generation-code.service';
 
@@ -21,7 +22,10 @@ export class GenerationCodeController {
   }
 
   @Post('use/:code')
-  async useGenerationCode(@Param('code') code: string): Promise<any> {
-    return await this.generationCode.useGenerationCode(code);
+  async useGenerationCode(
+    @Param('code') code: string,
+    @Body() body: UseGenerationCodeDTO,
+  ): Promise<any> {
+    return await this.generationCode.useGenerationCode(code, body);
   }
 }

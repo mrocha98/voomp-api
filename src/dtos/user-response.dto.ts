@@ -1,36 +1,44 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { Goal, HowKnew } from 'src/enums/user-onboarding';
 
-class CreateUserOnboardingResponseDTO {
+class UserOnboardingResponseDTO {
+  @Expose()
   @ApiProperty({ enum: HowKnew, required: false })
   howKnew?: HowKnew;
 
+  @Expose()
   @ApiProperty({ required: false })
   alreadySellOnline?: boolean;
 
+  @Expose()
   @ApiProperty({ enum: Goal, required: false })
   goal?: Goal;
 }
 
-export class CreateUserResponseDTO {
+export class UserResponseDTO {
+  @Expose()
   @ApiProperty()
   id: number;
 
+  @Expose()
   @ApiProperty()
   email: string;
 
+  @Expose()
   @ApiProperty()
   name: string;
 
+  @Expose()
   @ApiProperty()
   cpf: string;
 
+  @Expose()
   @ApiProperty()
   phoneNumber: string;
 
-  @ApiProperty({ type: CreateUserOnboardingResponseDTO })
-  @Type(() => CreateUserOnboardingResponseDTO)
-  onboarding: CreateUserOnboardingResponseDTO;
+  @Expose()
+  @ApiProperty({ type: UserOnboardingResponseDTO })
+  @Type(() => UserOnboardingResponseDTO)
+  onboarding: UserOnboardingResponseDTO;
 }

@@ -54,6 +54,12 @@ class IAService {
     const [responseData] = response.data;
     return { message: responseData.message.content };
   }
+
+  async iaTitle(
+    title: string
+  ): Promise<string> {
+    return await this.message(title);
+  } 
 }
 
 export { IAService };

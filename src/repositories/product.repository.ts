@@ -55,4 +55,23 @@ export class ProductRepository {
       where: { user: { id: userId } },
     });
   }
+
+  async countFunnelData(userId: number) {
+    const result = await this.productRepository
+      .createQueryBuilder('product')
+      .select('COUNT(DISTINCT visits.id)', 'visits')
+      .addSelect('COUNT(DISTINCT leads.id)', 'leads')
+      .addSelect('COUNT(DISTINCT sales.id)', 'sales')
+      .leftJoin('product.visits', 'visits')
+      .leftJoin('product.leads', 'leads')
+      .leftJoin('product.sales', 'sales')
+      .where('product.user.id = :userId', { userId })
+      .getRawOne<{ visits?: string; leads?: string; sales?: string }>();
+
+    const visitsCount = Number(result?.visits ?? 0);
+    const leadsCount = Number(result?.leads ?? 0);
+    const salesCount = Number(result?.sales ?? 0);
+
+    return { visitsCount, leadsCount, salesCount };
+  }
 }

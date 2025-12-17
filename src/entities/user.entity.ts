@@ -37,6 +37,9 @@ export class UserEntity {
   @Column()
   password: string;
 
+  @Column({ type: 'boolean', default: false })
+  whatsappAlertsActivated: boolean;
+
   @OneToOne(() => UserOnboardingEntity, (onboarding) => onboarding.user)
   @JoinColumn()
   onboarding: UserOnboardingEntity;

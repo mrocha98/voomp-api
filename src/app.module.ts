@@ -23,6 +23,17 @@ import { ProductService } from './services/product.service';
 import { IAService } from './services/ia.service';
 import { IAController } from './controllers/ia.controller';
 import { BucketService } from './services/bucket.service';
+import { UserController } from './controllers/user.controller';
+import { SaleEntity } from './entities/sale.entity';
+import { ProductVisitEntity } from './entities/product-visit.entity';
+import { LeadEntity } from './entities/lead.entity';
+import { ProductVisitRepository } from './repositories/product-visit.repository';
+import { WebhookService } from './services/webhook.service';
+import { WebhookController } from './controllers/webhook.controller';
+import { LeadRepository } from './repositories/lead.repository';
+import { SaleRepository } from './repositories/sale.repository';
+import { SaleController } from './controllers/sale.controller';
+import { SaleService } from './services/sale.service';
 
 @Module({
   imports: [
@@ -43,6 +54,9 @@ import { BucketService } from './services/bucket.service';
         UserOnboardingEntity,
         GenerationCodeEntity,
         ProductEntity,
+        ProductVisitEntity,
+        LeadEntity,
+        SaleEntity,
       ],
     }),
     TypeOrmModule.forFeature([
@@ -50,6 +64,9 @@ import { BucketService } from './services/bucket.service';
       UserOnboardingEntity,
       GenerationCodeEntity,
       ProductEntity,
+      ProductVisitEntity,
+      LeadEntity,
+      SaleEntity,
     ]),
     JwtModule.register({
       global: true,
@@ -63,6 +80,9 @@ import { BucketService } from './services/bucket.service';
     AuthController,
     IAController,
     ProductController,
+    UserController,
+    WebhookController,
+    SaleController,
   ],
   providers: [
     AppService,
@@ -75,6 +95,11 @@ import { BucketService } from './services/bucket.service';
     IAService,
     ProductRepository,
     ProductService,
+    ProductVisitRepository,
+    LeadRepository,
+    SaleRepository,
+    SaleService,
+    WebhookService,
   ],
 })
 export class AppModule {}

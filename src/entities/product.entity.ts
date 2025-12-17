@@ -9,10 +9,14 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
+import { SaleEntity } from './sale.entity';
+import { ProductVisitEntity } from './product-visit.entity';
+import { LeadEntity } from './lead.entity';
 
 @Entity('products')
 export class ProductEntity {
@@ -58,4 +62,13 @@ export class ProductEntity {
   })
   @JoinColumn({ name: 'userId' })
   user: UserEntity;
+
+  @OneToMany(() => ProductVisitEntity, (visit) => visit.product)
+  visits: ProductVisitEntity[];
+
+  @OneToMany(() => LeadEntity, (lead) => lead.product)
+  leads: LeadEntity[];
+
+  @OneToMany(() => SaleEntity, (sale) => sale.product)
+  sales: SaleEntity[];
 }

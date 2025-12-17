@@ -11,6 +11,7 @@ import { UserRepository } from 'src/repositories/user.repository';
 import { PasswordHashService } from './password-hash.service';
 import { LoginDTO } from 'src/dtos/login.dto';
 import { JwtService } from '@nestjs/jwt';
+import { GetPendingStepsResponseDTO } from 'src/dtos/get-pending-steps-response.dto';
 
 @Injectable()
 export class UserService {
@@ -80,5 +81,27 @@ export class UserService {
     const accessToken = await this.jwtService.signAsync(payload);
 
     return { accessToken };
+  }
+
+  async getPendingSteps(userId: number) {
+    const [hasProducts, hasSales] = await Promise.all([
+      this.userRepository.checkHasProducts(userId),
+      this.userRepository.checkHasSales(userId),
+    ]);
+
+    const pendingSteps = {
+      hasPersonalData: true, // mocked by now
+      hasIdentityValidated: false, // mocked by now
+      hasBusinessData: false, // mocked by now
+      hasProducts,
+      hasSales,
+    };
+
+    return plainToClass(GetPendingStepsResponseDTO, pendingSteps);
+  }
+
+  async getWhatsappAlertsStatus(userId: number) {
+    const user = await this.userRepository.findById(userId);
+    return { active: user!.whatsappAlertsActivated };
   }
 }

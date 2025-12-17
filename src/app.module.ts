@@ -34,6 +34,8 @@ import { LeadRepository } from './repositories/lead.repository';
 import { SaleRepository } from './repositories/sale.repository';
 import { SaleController } from './controllers/sale.controller';
 import { SaleService } from './services/sale.service';
+import { IAPromptsEntity } from './entities/ia-prompts.entity';
+import { IAPromptRepository } from './repositories/ia-prompts.repository';
 
 @Module({
   imports: [
@@ -57,6 +59,7 @@ import { SaleService } from './services/sale.service';
         ProductVisitEntity,
         LeadEntity,
         SaleEntity,
+        IAPromptsEntity
       ],
     }),
     TypeOrmModule.forFeature([
@@ -67,6 +70,7 @@ import { SaleService } from './services/sale.service';
       ProductVisitEntity,
       LeadEntity,
       SaleEntity,
+      IAPromptsEntity
     ]),
     JwtModule.register({
       global: true,
@@ -88,6 +92,8 @@ import { SaleService } from './services/sale.service';
     AppService,
     EmailService,
     BucketService,
+    SaleService,
+    WebhookService,
     GenerationCodeService,
     PasswordHashService,
     UserRepository,
@@ -98,8 +104,7 @@ import { SaleService } from './services/sale.service';
     ProductVisitRepository,
     LeadRepository,
     SaleRepository,
-    SaleService,
-    WebhookService,
+    IAPromptRepository
   ],
 })
 export class AppModule {}

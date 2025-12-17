@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEnum,
@@ -57,4 +56,14 @@ export class CreateProductDTO {
     default: ProductBillingType.oneTime,
   })
   billingType: ProductBillingType;
+}
+
+export class CreateProductApiBodyDTO extends CreateProductDTO {
+  @ApiProperty({
+    type: 'string',
+    format: 'binary',
+    required: false,
+    nullable: true,
+  })
+  cover: any;
 }

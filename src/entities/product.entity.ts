@@ -7,11 +7,16 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
+import { SaleEntity } from './sale.entity';
+import { ProductVisitEntity } from './product-visit.entity';
+import { LeadEntity } from './lead.entity';
 
 @Entity('products')
 export class ProductEntity {
@@ -40,7 +45,7 @@ export class ProductEntity {
   website?: string;
 
   @Column({ nullable: true })
-  imageUrl?: string;
+  coverUrl?: string;
 
   @Column({ type: 'smallint' })
   warrantyInDays: number;
@@ -51,6 +56,19 @@ export class ProductEntity {
   @Column({ type: 'enum', enum: ProductBillingType })
   billingType: ProductBillingType;
 
-  @ManyToOne(() => UserEntity, (user) => user.products)
+  @ManyToOne(() => UserEntity, (user) => user.products, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'userId' })
   user: UserEntity;
+
+  @OneToMany(() => ProductVisitEntity, (visit) => visit.product)
+  visits: ProductVisitEntity[];
+
+  @OneToMany(() => LeadEntity, (lead) => lead.product)
+  leads: LeadEntity[];
+
+  @OneToMany(() => SaleEntity, (sale) => sale.product)
+  sales: SaleEntity[];
 }

@@ -29,6 +29,13 @@ const Config = {
   jwt: {
     secret: process.env.JWT_SECRET!,
   },
+  aws: {
+    access_key_id: process.env.AWS_ACCESS_KEY_ID!,
+    secret_access_key: process.env.AWS_SECRET_ACCESS_KEY!,
+    bucket_name: process.env.AWS_BUCKET_NAME!,
+    s3_region: process.env.AWS_S3_REGION!,
+    session_token: process.env.AWS_SESSION_TOKEN!,
+  },
 } as const;
 
 export { Config };

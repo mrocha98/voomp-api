@@ -36,8 +36,16 @@ export class ProductResponseDTO {
   billingType: ProductBillingType;
 
   @Expose()
-  @ApiProperty({ required: false })
-  imageUrl?: string;
+  @ApiProperty({ nullable: true, required: false })
+  coverUrl?: string;
+
+  @Expose()
+  @ApiProperty()
+  createdAt: string;
+
+  @Expose()
+  @ApiProperty()
+  updatedAt: string;
 }
 
 export class ProductsResponseDTO {

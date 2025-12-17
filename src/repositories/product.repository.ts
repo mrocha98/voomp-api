@@ -34,7 +34,12 @@ export class ProductRepository {
 
   async findAllAndCount(
     userId: number,
-    { page, size, order, orderBy }: GetManyProductsDTO,
+    {
+      page = 1,
+      size = 10,
+      order = 'ASC',
+      orderBy = 'title',
+    }: GetManyProductsDTO,
   ) {
     const offset = (page - 1) * 10;
     return await this.productRepository.findAndCount({

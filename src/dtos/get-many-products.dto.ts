@@ -1,6 +1,7 @@
 import { IsBoolean, IsIn, IsOptional } from 'class-validator';
 import { PaginationDTO } from './pagination.dto';
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
 const orderByValues = ['createdAt', 'updatedAt', 'title'] as const;
 
@@ -14,10 +15,11 @@ export class GetManyProductsDTO extends PaginationDTO {
     enum: orderByValues,
     default: 'title',
   })
-  orderBy: OrderBy = 'title';
+  orderBy?: OrderBy;
 
   @IsOptional()
+  @Type(() => Boolean)
   @IsBoolean()
   @ApiProperty({ required: false, type: 'boolean' })
-  countOnly: boolean = false;
+  countOnly?: boolean;
 }

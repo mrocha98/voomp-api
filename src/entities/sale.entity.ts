@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   OneToOne,
@@ -13,6 +14,7 @@ import { ProductEntity } from './product.entity';
 import { LeadEntity } from './lead.entity';
 
 @Entity('sales')
+@Index(['product', 'isFirst'], { unique: true, where: '"isFirst" = true' })
 export class SaleEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -25,6 +27,9 @@ export class SaleEntity {
 
   @Column({ type: 'enum', enum: PaymentMethod })
   paymentMethod: PaymentMethod;
+
+  @Column({ default: false })
+  isFirst: boolean;
 
   @OneToOne(() => LeadEntity, (lead) => lead.sale, {
     nullable: false,

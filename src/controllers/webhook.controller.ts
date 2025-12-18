@@ -18,17 +18,17 @@ export class WebhookController {
 
   @Post('/visit')
   async newVisit(@Body() body: WebhookNewVisitDTO) {
-    await this.webhookService.newVisit(body);
+    return await this.webhookService.newVisit(body);
   }
 
   @Post('/lead')
   async newLead(@Body() body: WebhookNewLeadDTO) {
-    await this.webhookService.newLead(body);
+    return await this.webhookService.newLead(body);
   }
 
   @Post('/sale')
   async newSale(@Body() body: WebhookNewSaleDTO) {
-    await this.webhookService.newSale(body);
+    return await this.webhookService.newSale(body);
   }
 
   @Patch('/whatsapp-alerts-activation')

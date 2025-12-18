@@ -40,6 +40,7 @@ import { WhatsappController } from './controllers/whatsapp.controller';
 import { WhatsappService } from './services/whatsapp.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { WhatsappAlertsService } from './services/whatsapp-alerts.service';
+import { SaleSubscriber } from './entities/subscribers/sale.subscriber';
 
 @Module({
   imports: [
@@ -113,6 +114,7 @@ import { WhatsappAlertsService } from './services/whatsapp-alerts.service';
     IAPromptRepository,
     WhatsappService,
     WhatsappAlertsService,
+    SaleSubscriber,
   ],
 })
 export class AppModule {}

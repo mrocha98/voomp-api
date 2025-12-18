@@ -25,8 +25,16 @@ export class WhatsappAlertsService {
       'Com a *Voomp*, você tem estrutura para crescer.',
     ].join('\n\n');
 
-    return await firstValueFrom(
-      this.whatsappService.sendMessage(phoneNumber, message),
+    await firstValueFrom(
+      this.whatsappService.sendMessage(phoneNumber, message).pipe(
+        catchError((error) => {
+          this.logger.error(
+            `failed to send first sale message to phoneNumber ${phoneNumber}: ${(error as Error)?.message}`,
+            (error as Error)?.stack,
+          );
+          return of(null);
+        }),
+      ),
     );
   }
 

@@ -7,6 +7,7 @@ import { LeadRepository } from 'src/repositories/lead.repository';
 import { ProductVisitRepository } from 'src/repositories/product-visit.repository';
 import { SaleRepository } from 'src/repositories/sale.repository';
 import { UserRepository } from 'src/repositories/user.repository';
+import { WhatsappAlertsService } from './whatsapp-alerts.service';
 
 @Injectable()
 export class WebhookService {
@@ -15,23 +16,34 @@ export class WebhookService {
     private readonly leadRepository: LeadRepository,
     private readonly saleRepository: SaleRepository,
     private readonly userRepository: UserRepository,
+    private readonly whatsappAlertsService: WhatsappAlertsService,
   ) {}
 
   async newVisit(data: WebhookNewVisitDTO) {
-    await this.visitRepository.create(data.productId);
+    const visit = await this.visitRepository.create(data.productId);
+    return { id: visit.id };
   }
 
   async newLead(data: WebhookNewLeadDTO) {
-    await this.leadRepository.create(data.productId, data.visitId);
+    const lead = await this.leadRepository.create(data.productId, data.visitId);
+    return { id: lead.id };
   }
 
   async newSale(data: WebhookNewSaleDTO) {
-    await this.saleRepository.create(
+    const sale = await this.saleRepository.create(
       data.productId,
       data.leadId,
       data.paymentMethod,
     );
-    // TODO : validar se é primeira venda e disparar mensagem
+
+    if (sale.isFirst) {
+      const user = await this.userRepository.getUserOfSale(sale.id);
+      if (user?.whatsappAlertsActivated) {
+        await this.whatsappAlertsService.sendFirstSaleMessage(user.phoneNumber);
+      }
+    }
+
+    return { id: sale.id };
   }
 
   async whatsappActivation(data: WebhookWhatsappAlertsActivationDTO) {

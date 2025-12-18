@@ -83,4 +83,13 @@ export class UserRepository {
       .where('user.whatsappAlertsActivated = :activated', { activated: true })
       .getMany();
   }
+
+  async getUserOfSale(saleId: number) {
+    return await this.userRepository
+      .createQueryBuilder('user')
+      .innerJoin('user.products', 'product')
+      .innerJoin('product.sales', 'sale')
+      .where('sale.id = :saleId', { saleId })
+      .getOne();
+  }
 }

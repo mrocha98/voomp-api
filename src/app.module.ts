@@ -36,6 +36,10 @@ import { SaleController } from './controllers/sale.controller';
 import { SaleService } from './services/sale.service';
 import { IAPromptsEntity } from './entities/ia-prompts.entity';
 import { IAPromptRepository } from './repositories/ia-prompts.repository';
+import { WhatsappController } from './controllers/whatsapp.controller';
+import { WhatsappService } from './services/whatsapp.service';
+import { ScheduleModule } from '@nestjs/schedule';
+import { WhatsappAlertsService } from './services/whatsapp-alerts.service';
 
 @Module({
   imports: [
@@ -43,6 +47,7 @@ import { IAPromptRepository } from './repositories/ia-prompts.repository';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    ScheduleModule.forRoot(),
     TypeOrmModule.forRoot({
       type: Config.database.type,
       host: Config.database.host,
@@ -59,7 +64,7 @@ import { IAPromptRepository } from './repositories/ia-prompts.repository';
         ProductVisitEntity,
         LeadEntity,
         SaleEntity,
-        IAPromptsEntity
+        IAPromptsEntity,
       ],
     }),
     TypeOrmModule.forFeature([
@@ -70,7 +75,7 @@ import { IAPromptRepository } from './repositories/ia-prompts.repository';
       ProductVisitEntity,
       LeadEntity,
       SaleEntity,
-      IAPromptsEntity
+      IAPromptsEntity,
     ]),
     JwtModule.register({
       global: true,
@@ -87,6 +92,7 @@ import { IAPromptRepository } from './repositories/ia-prompts.repository';
     UserController,
     WebhookController,
     SaleController,
+    WhatsappController,
   ],
   providers: [
     AppService,
@@ -104,7 +110,9 @@ import { IAPromptRepository } from './repositories/ia-prompts.repository';
     ProductVisitRepository,
     LeadRepository,
     SaleRepository,
-    IAPromptRepository
+    IAPromptRepository,
+    WhatsappService,
+    WhatsappAlertsService,
   ],
 })
 export class AppModule {}

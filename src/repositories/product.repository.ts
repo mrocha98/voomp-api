@@ -50,9 +50,9 @@ export class ProductRepository {
     });
   }
 
-  async countAll(userId: number) {
+  async countAll(userId: number, active?: boolean) {
     return await this.productRepository.count({
-      where: { user: { id: userId } },
+      where: { user: { id: userId }, active },
     });
   }
 

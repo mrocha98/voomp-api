@@ -45,4 +45,19 @@ export class SaleRepository {
 
     return result?.totalSum ? parseFloat(result.totalSum) : 0;
   }
+
+  async countAmount(userId: number, startFrom?: Date) {
+    const query = this.saleRepository
+      .createQueryBuilder('sale')
+      .innerJoin('sale.product', 'product')
+      .select('COUNT(sale.id)', 'amount')
+      .where('product.userId = :userId', { userId });
+
+    const result = await query.getRawOne<{ amount: string }>();
+    if (startFrom) {
+      query.andWhere('sale.createdAt >= :startFrom', { startFrom });
+    }
+
+    return result?.amount ? parseFloat(result.amount) : 0;
+  }
 }

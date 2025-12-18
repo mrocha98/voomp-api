@@ -75,4 +75,12 @@ export class UserRepository {
       { whatsappAlertsActivated: activated },
     );
   }
+
+  async getMorningCallUsers() {
+    return await this.userRepository
+      .createQueryBuilder('user')
+      .innerJoin('user.products', 'product')
+      .where('user.whatsappAlertsActivated = :activated', { activated: true })
+      .getMany();
+  }
 }

@@ -56,6 +56,9 @@ export class ProductEntity {
   @Column({ type: 'enum', enum: ProductBillingType })
   billingType: ProductBillingType;
 
+  @Column({ type: 'boolean', default: true })
+  active: boolean;
+
   @ManyToOne(() => UserEntity, (user) => user.products, {
     nullable: false,
     onDelete: 'CASCADE',

@@ -36,6 +36,11 @@ const Config = {
     s3_region: process.env.AWS_S3_REGION!,
     session_token: process.env.AWS_SESSION_TOKEN!,
   },
+  whatsapp_api: {
+    url: process.env.WHATSAPP_API_URL!,
+    auth_user: process.env.WHATSAPP_API_AUTH_USER!,
+    auth_pass: process.env.WHATSAPP_API_AUTH_PASS!,
+  },
 } as const;
 
 export { Config };

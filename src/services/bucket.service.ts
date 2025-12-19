@@ -8,11 +8,11 @@ import { Config } from 'src/config';
 export class BucketService {
   private s3Client = new S3({
     region: Config.aws.s3_region,
-    credentials: {
-      accessKeyId: Config.aws.access_key_id,
-      secretAccessKey: Config.aws.secret_access_key,
-      sessionToken: Config.aws.session_token,
-    },
+    // credentials: {
+    //   accessKeyId: Config.aws.access_key_id,
+    //   secretAccessKey: Config.aws.secret_access_key,
+    //   sessionToken: Config.aws.session_token,
+    // },
   });
 
   async uploadFile(fileName: string, buffer: Buffer): Promise<string> {

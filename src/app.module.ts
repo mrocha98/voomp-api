@@ -42,6 +42,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { WhatsappAlertsService } from './services/whatsapp-alerts.service';
 import { SaleSubscriber } from './entities/subscribers/sale.subscriber';
 import { UserBusinessDataEntity } from './entities/user-business-data.entity';
+import { UserBankingDataEntity } from './entities/user-banking-data.entity';
 
 @Module({
   imports: [
@@ -68,6 +69,7 @@ import { UserBusinessDataEntity } from './entities/user-business-data.entity';
         SaleEntity,
         IAPromptsEntity,
         UserBusinessDataEntity,
+        UserBankingDataEntity,
       ],
     }),
     TypeOrmModule.forFeature([
@@ -80,6 +82,7 @@ import { UserBusinessDataEntity } from './entities/user-business-data.entity';
       SaleEntity,
       IAPromptsEntity,
       UserBusinessDataEntity,
+      UserBankingDataEntity,
     ]),
     JwtModule.register({
       global: true,

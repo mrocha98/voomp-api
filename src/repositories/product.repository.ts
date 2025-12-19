@@ -16,11 +16,13 @@ export class ProductRepository {
     return await this.productRepository.findOneBy({ id, user: { id: userId } });
   }
 
-  async create(product: CreateProductDTO, userId: number, coverUrl?: string) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async create(product: CreateProductDTO, userId: number, _coverUrl?: string) {
     return await this.productRepository.save({
       ...product,
       user: { id: userId },
-      coverUrl,
+      coverUrl:
+        'https://upload.wikimedia.org/wikipedia/commons/2/20/Photoshop_CC_icon.png', // demo
     });
   }
 

@@ -43,4 +43,9 @@ export class UserController {
   async addBusinessData(@User('id') userId: number) {
     await this.userService.addBusinessData(userId);
   }
+
+  @Post('/banking-data')
+  async addBankingData(@User('id') userId: number) {
+    await this.userService.addBankingData(userId);
+  }
 }

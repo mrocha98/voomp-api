@@ -16,6 +16,9 @@ export class GetPendingStepsResponseDTO {
   @ApiProperty({ type: 'boolean' })
   hasSales: boolean;
 
+  @ApiProperty({ type: 'boolean' })
+  hasBankingData: boolean;
+
   @ApiProperty({ type: 'integer' })
   totalSteps: number;
 

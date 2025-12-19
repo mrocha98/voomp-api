@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDTO } from 'src/dtos/create-user.dto';
 import { ProductEntity } from 'src/entities/product.entity';
 import { SaleEntity } from 'src/entities/sale.entity';
+import { UserBankingDataEntity } from 'src/entities/user-banking-data.entity';
 import { UserBusinessDataEntity } from 'src/entities/user-business-data.entity';
 import { UserOnboardingEntity } from 'src/entities/user-onboarding.entity';
 import { UserEntity } from 'src/entities/user.entity';
@@ -21,6 +22,8 @@ export class UserRepository {
     private readonly saleRepository: Repository<SaleEntity>,
     @InjectRepository(UserBusinessDataEntity)
     private readonly userBusinessDataRepository: Repository<UserBusinessDataEntity>,
+    @InjectRepository(UserBankingDataEntity)
+    private readonly userBankingDataRepository: Repository<UserBankingDataEntity>,
   ) {}
 
   async findById(id: number) {
@@ -109,11 +112,25 @@ export class UserRepository {
     });
   }
 
+  async getUserBankingData(userId: number) {
+    return await this.userBankingDataRepository.findOneBy({
+      user: { id: userId },
+    });
+  }
+
   async addBusinessData(userId: number) {
     const user = await this.findById(userId);
     if (!user) {
       throw new Error('user not exists');
     }
     await this.userBusinessDataRepository.save({ user: { id: userId } });
+  }
+
+  async addBankingData(userId: number) {
+    const user = await this.findById(userId);
+    if (!user) {
+      throw new Error('user not exists');
+    }
+    await this.userBankingDataRepository.save({ user: { id: userId } });
   }
 }

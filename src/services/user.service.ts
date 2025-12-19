@@ -84,14 +84,17 @@ export class UserService {
   }
 
   async getPendingSteps(userId: number) {
-    const [user, hasProducts, hasSales, businessData] = await Promise.all([
-      this.userRepository.findById(userId),
-      this.userRepository.checkHasProducts(userId),
-      this.userRepository.checkHasSales(userId),
-      this.userRepository.getUserBusinessData(userId),
-    ]);
+    const [user, hasProducts, hasSales, businessData, bankingData] =
+      await Promise.all([
+        this.userRepository.findById(userId),
+        this.userRepository.checkHasProducts(userId),
+        this.userRepository.checkHasSales(userId),
+        this.userRepository.getUserBusinessData(userId),
+        this.userRepository.getUserBankingData(userId),
+      ]);
     const hasIdentityValidated = user?.hasIdentityValidated ?? false;
     const hasBusinessData = !!businessData;
+    const hasBankingData = !!bankingData;
 
     const stepsProgress = {
       hasPersonalData: true,
@@ -100,6 +103,7 @@ export class UserService {
       hasProducts: hasIdentityValidated && hasBusinessData && hasProducts,
       hasSales:
         hasIdentityValidated && hasBusinessData && hasProducts && hasSales,
+      hasBankingData, // this one don't have the rule of previous values filled
     };
     const stepsValues = Object.values(stepsProgress);
     const totalSteps = stepsValues.length;
@@ -127,5 +131,9 @@ export class UserService {
 
   async addBusinessData(userId: number) {
     await this.userRepository.addBusinessData(userId);
+  }
+
+  async addBankingData(userId: number) {
+    await this.userRepository.addBankingData(userId);
   }
 }

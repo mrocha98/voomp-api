@@ -11,6 +11,7 @@ import {
 import { UserOnboardingEntity } from './user-onboarding.entity';
 import { ProductEntity } from './product.entity';
 import { UserBusinessDataEntity } from './user-business-data.entity';
+import { UserBankingDataEntity } from './user-banking-data.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -51,6 +52,10 @@ export class UserEntity {
   @OneToOne(() => UserBusinessDataEntity, (businessData) => businessData.user)
   @JoinColumn()
   businessData: UserBusinessDataEntity;
+
+  @OneToOne(() => UserBankingDataEntity, (bankingData) => bankingData.user)
+  @JoinColumn()
+  bankingData: UserBankingDataEntity;
 
   @OneToMany(() => ProductEntity, (product) => product.user)
   products: ProductEntity[];

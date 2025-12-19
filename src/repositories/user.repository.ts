@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDTO } from 'src/dtos/create-user.dto';
 import { ProductEntity } from 'src/entities/product.entity';
 import { SaleEntity } from 'src/entities/sale.entity';
+import { UserBusinessDataEntity } from 'src/entities/user-business-data.entity';
 import { UserOnboardingEntity } from 'src/entities/user-onboarding.entity';
 import { UserEntity } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -18,6 +19,8 @@ export class UserRepository {
     private readonly productRepository: Repository<ProductEntity>,
     @InjectRepository(SaleEntity)
     private readonly saleRepository: Repository<SaleEntity>,
+    @InjectRepository(UserBusinessDataEntity)
+    private readonly userBusinessDataRepository: Repository<UserBusinessDataEntity>,
   ) {}
 
   async findById(id: number) {
@@ -91,5 +94,26 @@ export class UserRepository {
       .innerJoin('product.sales', 'sale')
       .where('sale.id = :saleId', { saleId })
       .getOne();
+  }
+
+  async updateUserIdentityValidation(userId: number, valid: boolean) {
+    await this.userRepository.update(
+      { id: userId },
+      { hasIdentityValidated: valid },
+    );
+  }
+
+  async getUserBusinessData(userId: number) {
+    return await this.userBusinessDataRepository.findOneBy({
+      user: { id: userId },
+    });
+  }
+
+  async addBusinessData(userId: number) {
+    const user = await this.findById(userId);
+    if (!user) {
+      throw new Error('user not exists');
+    }
+    await this.userBusinessDataRepository.save({ user: { id: userId } });
   }
 }

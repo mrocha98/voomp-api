@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { UserOnboardingEntity } from './user-onboarding.entity';
 import { ProductEntity } from './product.entity';
+import { UserBusinessDataEntity } from './user-business-data.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -40,9 +41,16 @@ export class UserEntity {
   @Column({ type: 'boolean', default: false })
   whatsappAlertsActivated: boolean;
 
+  @Column({ type: 'boolean', default: false })
+  hasIdentityValidated: boolean;
+
   @OneToOne(() => UserOnboardingEntity, (onboarding) => onboarding.user)
   @JoinColumn()
   onboarding: UserOnboardingEntity;
+
+  @OneToOne(() => UserBusinessDataEntity, (businessData) => businessData.user)
+  @JoinColumn()
+  businessData: UserBusinessDataEntity;
 
   @OneToMany(() => ProductEntity, (product) => product.user)
   products: ProductEntity[];

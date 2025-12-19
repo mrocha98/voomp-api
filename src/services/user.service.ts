@@ -84,17 +84,33 @@ export class UserService {
   }
 
   async getPendingSteps(userId: number) {
-    const [hasProducts, hasSales] = await Promise.all([
+    const [user, hasProducts, hasSales, businessData] = await Promise.all([
+      this.userRepository.findById(userId),
       this.userRepository.checkHasProducts(userId),
       this.userRepository.checkHasSales(userId),
+      this.userRepository.getUserBusinessData(userId),
     ]);
+    const hasIdentityValidated = user?.hasIdentityValidated ?? false;
+    const hasBusinessData = !!businessData;
+
+    const stepsProgress = {
+      hasPersonalData: true,
+      hasIdentityValidated,
+      hasBusinessData: hasIdentityValidated && hasBusinessData,
+      hasProducts: hasIdentityValidated && hasBusinessData && hasProducts,
+      hasSales:
+        hasIdentityValidated && hasBusinessData && hasProducts && hasSales,
+    };
+    const stepsValues = Object.values(stepsProgress);
+    const totalSteps = stepsValues.length;
+    const completedSteps = stepsValues.filter(Boolean).length;
+    const completionPercentage = (completedSteps / totalSteps) * 100;
 
     const pendingSteps = {
-      hasPersonalData: true, // mocked by now
-      hasIdentityValidated: false, // mocked by now
-      hasBusinessData: false, // mocked by now
-      hasProducts,
-      hasSales,
+      ...stepsProgress,
+      totalSteps,
+      completedSteps,
+      completionPercentage,
     };
 
     return plainToClass(GetPendingStepsResponseDTO, pendingSteps);
@@ -103,5 +119,13 @@ export class UserService {
   async getWhatsappAlertsStatus(userId: number) {
     const user = await this.userRepository.findById(userId);
     return { active: user!.whatsappAlertsActivated };
+  }
+
+  async updateUserIdentityValidation(userId: number, valid: boolean) {
+    await this.userRepository.updateUserIdentityValidation(userId, valid);
+  }
+
+  async addBusinessData(userId: number) {
+    await this.userRepository.addBusinessData(userId);
   }
 }

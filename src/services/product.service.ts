@@ -1,6 +1,7 @@
 import {
   ForbiddenException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { plainToClass, plainToInstance } from 'class-transformer';
@@ -17,6 +18,8 @@ import path from 'node:path';
 
 @Injectable()
 export class ProductService {
+  private readonly logger = new Logger(ProductService.name);
+
   constructor(
     private readonly productRepository: ProductRepository,
     private readonly bucketService: BucketService,
@@ -44,7 +47,14 @@ export class ProductService {
         `${name}_${randomData}${ext}`,
       );
 
-      coverUrl = await this.bucketService.uploadFile(fileName, cover.buffer);
+      try {
+        coverUrl = await this.bucketService.uploadFile(fileName, cover.buffer);
+      } catch (ex) {
+        this.logger.error(
+          `failed to upload image in product creation: ${(ex as Error)?.message}`,
+          (ex as Error)?.stack,
+        );
+      }
     }
 
     return await this.productRepository.create(product, userId, coverUrl);

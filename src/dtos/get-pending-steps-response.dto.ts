@@ -15,4 +15,13 @@ export class GetPendingStepsResponseDTO {
 
   @ApiProperty({ type: 'boolean' })
   hasSales: boolean;
+
+  @ApiProperty({ type: 'integer' })
+  totalSteps: number;
+
+  @ApiProperty({ type: 'integer' })
+  completedSteps: number;
+
+  @ApiProperty({ type: 'number' })
+  completionPercentage: number;
 }

@@ -77,6 +77,7 @@ export class UserService {
       name: user.name,
       email: user.email,
       phoneNumber: user.phoneNumber,
+      cpf: user.cpf,
     };
     const accessToken = await this.jwtService.signAsync(payload);
 
